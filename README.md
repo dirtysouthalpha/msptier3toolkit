@@ -1,5 +1,5 @@
 # msptier3toolkit
-Scripts to assist any MSP techs with common things
+Powershell scripts to assist any MSP techs with common things
 
 SystemHealthReport.ps1 – Inventory + system health summary
 
