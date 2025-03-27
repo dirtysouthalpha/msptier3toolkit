@@ -1,22 +1,33 @@
-# msptier3toolkit
-Powershell scripts to assist any MSP techs with common things
+# MSP Tier 3 Toolkit 🚀
 
-SystemHealthReport.ps1 – Inventory + system health summary
+Welcome to the **MSP Tier 3 Toolkit** — a collection of high-impact PowerShell scripts designed to help Service Desk Technicians, System Admins, and MSP engineers troubleshoot faster, automate routine tasks, and deliver enterprise-level support with confidence.
 
-CheckADUserStatus.ps1 – AD lockout and password age checker
+## 🔧 Current Scripts
 
-CleanupOldProfiles.ps1 – Remove stale local profiles
+| Script Name                | Description |
+|---------------------------|-------------|
+| `SystemHealthReport.ps1` | Outputs key system stats (RAM, disk, OS, last boot) |
+| `CheckADUserStatus.ps1`  | Checks lockout, password age, login failures |
+| `CleanupOldProfiles.ps1` | Deletes unused local profiles |
+| `M365UserProvisioning.ps1` | Assigns license and sets usage location |
+| `PrinterSpoolerFix.ps1`  | Clears stuck spool jobs |
+| `RemoteUninstall.ps1`    | Removes specified program silently |
+| `FixMappedDrives.ps1`    | Tests and refreshes mapped network drives |
+| `WindowsUpdateFix.ps1`   | Resets update components |
+| `BootTimeAnalyzer.ps1`   | Finds last boot and shutdown times |
+| `ClientSystemSummary.ps1` | Creates an HTML report for end users |
 
-M365UserProvisioning.ps1 – Assign Office 365 licenses
+## 🚧 Planned Additions
 
-PrinterSpoolerFix.ps1 – Clear stuck print jobs
+See [ROADMAP.md](./ROADMAP.md) for upcoming scripts and contributions.
 
-RemoteUninstall.ps1 – Silent app uninstaller by name
+## 📥 How to Use
 
-FixMappedDrives.ps1 – Reconnect broken network shares
+1. Clone or download the repo
+2. Right-click `.ps1` scripts and run in PowerShell (preferably as Admin)
+3. Review logs/output or integrate with RMM automation
 
-WindowsUpdateFix.ps1 – Repair Windows Update service
+---
 
-BootTimeAnalyzer.ps1 – Get boot/shutdown timestamps
+> 💡 Most scripts are safe to run unattended — but always test in a non-production environment first.
 
-ClientSystemSummary.ps1 – Export a client-facing HTML system summary
