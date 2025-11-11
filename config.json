@@ -68,7 +68,7 @@
     "backupBeforeUpdate": true
   },
   "webInterface": {
-    "enabled": false,
+    "enabled": true,
     "port": 8080,
     "useSSL": false,
     "allowRemoteConnections": false,
