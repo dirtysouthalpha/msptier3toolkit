@@ -54,11 +54,11 @@ function Write-ColorMessage {
     )
 
     $icon = switch ($Type) {
-        "SUCCESS" { "✓"; $color = "Green" }
-        "ERROR" { "✗"; $color = "Red" }
-        "WARNING" { "⚠"; $color = "Yellow" }
-        "INFO" { "ℹ"; $color = "Cyan" }
-        default { "•"; $color = "White" }
+        "SUCCESS" { "[+]"; $color = "Green" }
+        "ERROR" { "[X]"; $color = "Red" }
+        "WARNING" { "[!]"; $color = "Yellow" }
+        "INFO" { "[i]"; $color = "Cyan" }
+        default { "[*]"; $color = "White" }
     }
 
     Write-Host "$icon " -NoNewline -ForegroundColor $color
@@ -69,7 +69,7 @@ function Show-SuccessBox {
     param([string]$Message)
     Write-Host ""
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "  ║                     ✓ SUCCESS ✓                          ║" -ForegroundColor Green
+    Write-Host "  ║                     [SUCCESS]                             ║" -ForegroundColor Green
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Green
     $padded = $Message.PadRight(55).Substring(0, 55)
     Write-Host "  ║  $padded  ║" -ForegroundColor Green
@@ -81,7 +81,7 @@ function Show-ErrorBox {
     param([string]$Message, [string]$Details = "")
     Write-Host ""
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "  ║                      ✗ ERROR ✗                           ║" -ForegroundColor Red
+    Write-Host "  ║                      [ERROR]                              ║" -ForegroundColor Red
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Red
     $padded = $Message.PadRight(55).Substring(0, 55)
     Write-Host "  ║  $padded  ║" -ForegroundColor Red
@@ -102,7 +102,7 @@ $Script:ToolCatalog = @(
         Description = "Generate comprehensive system health report"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\SystemHealthReport.ps1"
-        Icon = "📊"
+        Icon = "[RPT]"
         RequiresAdmin = $false
     },
     @{
@@ -111,7 +111,7 @@ $Script:ToolCatalog = @(
         Description = "Analyze boot and shutdown times from Event Logs"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\BootTimeAnalyzer.ps1"
-        Icon = "⏱️"
+        Icon = "[TIME]"
         RequiresAdmin = $false
     },
     @{
@@ -120,7 +120,7 @@ $Script:ToolCatalog = @(
         Description = "Generate HTML system summary for clients"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\ClientSystemSummary.ps1"
-        Icon = "📄"
+        Icon = "[HTML]"
         RequiresAdmin = $false
     },
     @{
@@ -129,7 +129,7 @@ $Script:ToolCatalog = @(
         Description = "Check user lockout and password status"
         Category = "Active Directory"
         Path = "MSP_Tier3_Toolkit\CheckADUserStatus.ps1"
-        Icon = "👤"
+        Icon = "[USER]"
         RequiresAdmin = $false
     },
     @{
@@ -138,7 +138,7 @@ $Script:ToolCatalog = @(
         Description = "Provision Office 365 licenses for users"
         Category = "Microsoft 365"
         Path = "MSP_Tier3_Toolkit\M365UserProvisioning.ps1"
-        Icon = "☁️"
+        Icon = "[O365]"
         RequiresAdmin = $false
     },
     @{
@@ -147,7 +147,7 @@ $Script:ToolCatalog = @(
         Description = "Remove user profiles older than 30 days"
         Category = "Maintenance"
         Path = "MSP_Tier3_Toolkit\CleanupOldProfiles.ps1"
-        Icon = "🧹"
+        Icon = "[CLN]"
         RequiresAdmin = $true
     },
     @{
@@ -156,7 +156,7 @@ $Script:ToolCatalog = @(
         Description = "Full system cleanup with logging"
         Category = "Maintenance"
         Path = "Cleanup Script\Cleanup-Auto.ps1"
-        Icon = "🗑️"
+        Icon = "[FULL]"
         RequiresAdmin = $true
     },
     @{
@@ -165,7 +165,7 @@ $Script:ToolCatalog = @(
         Description = "Fix stuck print jobs and restart spooler"
         Category = "Print Management"
         Path = "MSP_Tier3_Toolkit\PrinterSpoolerFix.ps1"
-        Icon = "🖨️"
+        Icon = "[PRNT]"
         RequiresAdmin = $true
     },
     @{
@@ -174,7 +174,7 @@ $Script:ToolCatalog = @(
         Description = "Deploy automatic spooler monitoring"
         Category = "Print Management"
         Path = "Auto-Check and Start Printer Spooler\CheckAndStart-Spooler.ps1"
-        Icon = "👁️"
+        Icon = "[MON]"
         RequiresAdmin = $true
     },
     @{
@@ -183,7 +183,7 @@ $Script:ToolCatalog = @(
         Description = "Test and repair network drive mappings"
         Category = "Network"
         Path = "MSP_Tier3_Toolkit\FixMappedDrives.ps1"
-        Icon = "🔌"
+        Icon = "[NET]"
         RequiresAdmin = $false
     },
     @{
@@ -192,7 +192,7 @@ $Script:ToolCatalog = @(
         Description = "Uninstall software silently"
         Category = "Software"
         Path = "MSP_Tier3_Toolkit\RemoteUninstall.ps1"
-        Icon = "📦"
+        Icon = "[UNIN]"
         RequiresAdmin = $true
     },
     @{
@@ -201,7 +201,7 @@ $Script:ToolCatalog = @(
         Description = "Reset Windows Update components"
         Category = "Windows Update"
         Path = "MSP_Tier3_Toolkit\WindowsUpdateFix.ps1"
-        Icon = "🔄"
+        Icon = "[UPDT]"
         RequiresAdmin = $true
     }
 )
@@ -251,7 +251,7 @@ function Show-MainMenu {
 
     # System info bar
     $isAdmin = Test-AdminRights
-    $adminStatus = if ($isAdmin) { "✓ Admin" } else { "User" }
+    $adminStatus = if ($isAdmin) { "[+] Admin" } else { "User" }
     $adminColor = if ($isAdmin) { "Green" } else { "Yellow" }
 
     Write-Host "  ┌─────────────────────────────────────────────────────────────────────────────┐" -ForegroundColor DarkGray
@@ -303,9 +303,9 @@ function Show-MainMenu {
     Write-Host " ═══╗" -ForegroundColor Magenta
     Write-Host ""
     Write-Host "    [H]  " -NoNewline -ForegroundColor White
-    Write-Host "❓ Help & About" -ForegroundColor Cyan
+    Write-Host "[?] Help and About" -ForegroundColor Cyan
     Write-Host "    [Q]  " -NoNewline -ForegroundColor White
-    Write-Host "❌ Quit" -ForegroundColor Cyan
+    Write-Host "[X] Quit" -ForegroundColor Cyan
     Write-Host ""
 
     # Show recently used
@@ -318,7 +318,7 @@ function Show-MainMenu {
         for ($i = 0; $i -lt $recentCount; $i++) {
             $recentTool = $Script:ToolCatalog | Where-Object { $_.ID -eq $Script:Recents[$i] }
             if ($recentTool) {
-                Write-Host "    ⭐ " -NoNewline
+                Write-Host "    [*] " -NoNewline
                 Write-Host "$($recentTool.Icon) $($recentTool.Name)" -ForegroundColor Gray
             }
         }
@@ -389,25 +389,25 @@ function Show-Help {
     Write-Host ("═" * 80) -ForegroundColor Cyan
     Write-Host ""
 
-    Write-Host "  📖 HOW TO USE" -ForegroundColor Yellow
-    Write-Host "  ─────────────" -ForegroundColor DarkGray
+    Write-Host "  [?] HOW TO USE" -ForegroundColor Yellow
+    Write-Host "  ──────────────" -ForegroundColor DarkGray
     Write-Host ""
-    Write-Host "  • Enter a number (1-12) to run a script" -ForegroundColor Gray
-    Write-Host "  • Scripts marked [ADMIN] require administrator rights" -ForegroundColor Gray
-    Write-Host "  • To run as admin: Right-click PowerShell → Run as Administrator" -ForegroundColor Gray
-    Write-Host ""
-
-    Write-Host "  🎯 QUICK TIPS" -ForegroundColor Yellow
-    Write-Host "  ────────────" -ForegroundColor DarkGray
-    Write-Host ""
-    Write-Host "  • All scripts are standalone and safe to run" -ForegroundColor Gray
-    Write-Host "  • Scripts are located in: MSP_Tier3_Toolkit folder" -ForegroundColor Gray
-    Write-Host "  • Your recently used scripts appear at the bottom" -ForegroundColor Gray
-    Write-Host "  • No installation or setup required!" -ForegroundColor Gray
+    Write-Host "  * Enter a number (1-12) to run a script" -ForegroundColor Gray
+    Write-Host "  * Scripts marked [ADMIN] require administrator rights" -ForegroundColor Gray
+    Write-Host "  * To run as admin: Right-click PowerShell and Run as Administrator" -ForegroundColor Gray
     Write-Host ""
 
-    Write-Host "  📝 ABOUT" -ForegroundColor Yellow
-    Write-Host "  ───────" -ForegroundColor DarkGray
+    Write-Host "  [+] QUICK TIPS" -ForegroundColor Yellow
+    Write-Host "  ──────────────" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  * All scripts are standalone and safe to run" -ForegroundColor Gray
+    Write-Host "  * Scripts are located in: MSP_Tier3_Toolkit folder" -ForegroundColor Gray
+    Write-Host "  * Your recently used scripts appear at the bottom" -ForegroundColor Gray
+    Write-Host "  * No installation or setup required!" -ForegroundColor Gray
+    Write-Host ""
+
+    Write-Host "  [i] ABOUT" -ForegroundColor Yellow
+    Write-Host "  ─────────" -ForegroundColor DarkGray
     Write-Host ""
     Write-Host "  MSP Tier 3 Toolkit v2.0" -ForegroundColor White
     Write-Host "  A collection of PowerShell automation scripts" -ForegroundColor Gray
@@ -416,8 +416,8 @@ function Show-Help {
     Write-Host "  GitHub: github.com/dirtysouthalpha/msptier3toolkit" -ForegroundColor Cyan
     Write-Host ""
 
-    Write-Host "  💡 COMMON SCRIPTS" -ForegroundColor Yellow
-    Write-Host "  ────────────────" -ForegroundColor DarkGray
+    Write-Host "  [!] COMMON SCRIPTS" -ForegroundColor Yellow
+    Write-Host "  ──────────────────" -ForegroundColor DarkGray
     Write-Host ""
     Write-Host "  [1] System Health - Quick system diagnostics" -ForegroundColor Gray
     Write-Host "  [7] Cleanup - Free up disk space" -ForegroundColor Gray
@@ -468,7 +468,7 @@ do {
             Write-Host ""
             Write-Host "  ╔════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
             Write-Host "  ║                                                        ║" -ForegroundColor Cyan
-            Write-Host "  ║        Thanks for using MSP Toolkit! 🚀               ║" -ForegroundColor Cyan
+            Write-Host "  ║        Thanks for using MSP Toolkit!                  ║" -ForegroundColor Cyan
             Write-Host "  ║                                                        ║" -ForegroundColor Cyan
             Write-Host "  ╚════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
             Write-Host ""
