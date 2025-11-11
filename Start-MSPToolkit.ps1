@@ -15,16 +15,146 @@ param(
     [string]$Script
 )
 
-# Import core modules
-$CorePath = "$PSScriptRoot\Core"
-Import-Module "$CorePath\MSPToolkit.Config.psm1" -Force
-Import-Module "$CorePath\MSPToolkit.Logging.psm1" -Force
-Import-Module "$CorePath\MSPToolkit.Remote.psm1" -Force
+# Set error handling
+$ErrorActionPreference = 'Continue'
 
-# Initialize
-Initialize-MSPLogging -ScriptName "Launcher"
-$config = Get-MSPConfig
-Initialize-MSPDirectories
+# Import core modules with error handling
+try {
+    $CorePath = "$PSScriptRoot\Core"
+
+    if (Test-Path "$CorePath\MSPToolkit.Config.psm1") {
+        Import-Module "$CorePath\MSPToolkit.Config.ps1" -Force -ErrorAction Stop
+    }
+
+    if (Test-Path "$CorePath\MSPToolkit.Logging.psm1") {
+        Import-Module "$CorePath\MSPToolkit.Logging.psm1" -Force -ErrorAction Stop
+    }
+
+    if (Test-Path "$CorePath\MSPToolkit.Remote.psm1") {
+        Import-Module "$CorePath\MSPToolkit.Remote.psm1" -Force -ErrorAction Stop
+    }
+
+    # Initialize
+    if (Get-Command Initialize-MSPLogging -ErrorAction SilentlyContinue) {
+        Initialize-MSPLogging -ScriptName "Launcher" -ErrorAction SilentlyContinue
+    }
+
+    if (Get-Command Get-MSPConfig -ErrorAction SilentlyContinue) {
+        $config = Get-MSPConfig
+    }
+
+    if (Get-Command Initialize-MSPDirectories -ErrorAction SilentlyContinue) {
+        Initialize-MSPDirectories -ErrorAction SilentlyContinue
+    }
+}
+catch {
+    Write-Warning "Some modules failed to load. Basic functionality will be available."
+    Write-Warning "Error: $_"
+}
+
+# Fallback functions if modules didn't load
+if (-not (Get-Command Write-MSPLog -ErrorAction SilentlyContinue)) {
+    function Write-MSPLog {
+        param([string]$Message, [string]$Level = "INFO")
+
+        $color = switch ($Level) {
+            "SUCCESS" { "Green" }
+            "ERROR" { "Red" }
+            "WARNING" { "Yellow" }
+            "HEADER" { "Cyan" }
+            default { "White" }
+        }
+
+        $icon = switch ($Level) {
+            "SUCCESS" { "✓" }
+            "ERROR" { "✗" }
+            "WARNING" { "⚠" }
+            "INFO" { "ℹ" }
+            "HEADER" { "" }
+            default { "•" }
+        }
+
+        if ($Level -eq "HEADER") {
+            Write-Host ""
+            Write-Host ("═" * 80) -ForegroundColor $color
+            Write-Host " $Message" -ForegroundColor $color
+            Write-Host ("═" * 80) -ForegroundColor $color
+            Write-Host ""
+        } else {
+            Write-Host "$icon " -NoNewline -ForegroundColor $color
+            Write-Host $Message -ForegroundColor White
+        }
+    }
+}
+
+if (-not (Get-Command Show-MSPBanner -ErrorAction SilentlyContinue)) {
+    function Show-MSPBanner {
+        $banner = @"
+
+    ███╗   ███╗███████╗██████╗     ████████╗ ██████╗  ██████╗ ██╗     ██╗  ██╗██╗████████╗
+    ████╗ ████║██╔════╝██╔══██╗    ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██║ ██╔╝██║╚══██╔══╝
+    ██╔████╔██║███████╗██████╔╝       ██║   ██║   ██║██║   ██║██║     █████╔╝ ██║   ██║
+    ██║╚██╔╝██║╚════██║██╔═══╝        ██║   ██║   ██║██║   ██║██║     ██╔═██╗ ██║   ██║
+    ██║ ╚═╝ ██║███████║██║            ██║   ╚██████╔╝╚██████╔╝███████╗██║  ██╗██║   ██║
+    ╚═╝     ╚═╝╚══════╝╚═╝            ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝
+
+              ╔════════════════════════════════════════════════════════════╗
+              ║        TIER 3 SUPPORT AUTOMATION PLATFORM v2.0.0           ║
+              ║              Dazzle. Automate. Dominate.                  ║
+              ╚════════════════════════════════════════════════════════════╝
+
+"@
+        Write-Host $banner -ForegroundColor Cyan
+        Write-Host "  Timestamp:  " -NoNewline -ForegroundColor Gray
+        Write-Host (Get-Date -Format "yyyy-MM-dd HH:mm:ss") -ForegroundColor Yellow
+        Write-Host ""
+    }
+}
+
+if (-not (Get-Command Show-MSPError -ErrorAction SilentlyContinue)) {
+    function Show-MSPError {
+        param([string]$Message, [string]$Details = "")
+
+        Write-Host ""
+        Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Red
+        Write-Host "  ║                      ✗ ERROR ✗                           ║" -ForegroundColor Red
+        Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Red
+        $msgPadded = $Message.PadRight(55)
+        if ($msgPadded.Length -gt 55) { $msgPadded = $msgPadded.Substring(0, 55) }
+        Write-Host "  ║  $msgPadded  ║" -ForegroundColor Red
+        if ($Details) {
+            Write-Host "  ║                                                           ║" -ForegroundColor Red
+            $detailsPadded = $Details.Substring(0, [Math]::Min(47, $Details.Length)).PadRight(47)
+            Write-Host "  ║  Details: $detailsPadded  ║" -ForegroundColor Red
+        }
+        Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Red
+        Write-Host ""
+    }
+}
+
+if (-not (Get-Command Show-MSPSuccess -ErrorAction SilentlyContinue)) {
+    function Show-MSPSuccess {
+        param([string]$Message)
+
+        Write-Host ""
+        Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
+        Write-Host "  ║                     ✓ SUCCESS ✓                          ║" -ForegroundColor Green
+        Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Green
+        $msgPadded = $Message.PadRight(55)
+        if ($msgPadded.Length -gt 55) { $msgPadded = $msgPadded.Substring(0, 55) }
+        Write-Host "  ║  $msgPadded  ║" -ForegroundColor Green
+        Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Green
+        Write-Host ""
+    }
+}
+
+if (-not (Get-Command Test-MSPAdminRights -ErrorAction SilentlyContinue)) {
+    function Test-MSPAdminRights {
+        $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+        return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
 
 # Script catalog with categories
 $Script:ToolCatalog = @(
@@ -164,34 +294,43 @@ $Script:ToolCatalog = @(
 )
 
 # Recently used scripts tracking
-$Script:RecentsFile = Join-Path $config.paths.cache "recents.json"
+$Script:RecentsFile = "$env:TEMP\msp-recents.json"
 $Script:Recents = @()
 if (Test-Path $Script:RecentsFile) {
-    $Script:Recents = Get-Content $Script:RecentsFile | ConvertFrom-Json
+    try {
+        $Script:Recents = Get-Content $Script:RecentsFile -ErrorAction SilentlyContinue | ConvertFrom-Json
+    } catch {
+        $Script:Recents = @()
+    }
 }
 
 function Show-MainMenu {
     Clear-Host
 
     if (-not $SkipBanner) {
-        Show-MSPBanner -Version $config.version
+        Show-MSPBanner
     }
 
     # System info bar
-    $sysInfo = Get-MSPSystemInfo
+    $isAdmin = Test-MSPAdminRights
+
     Write-Host "  ┌─────────────────────────────────────────────────────────────────────────────┐" -ForegroundColor DarkGray
     Write-Host "  │ " -NoNewline -ForegroundColor DarkGray
     Write-Host "Computer: " -NoNewline -ForegroundColor Gray
-    Write-Host "$($sysInfo.ComputerName)" -NoNewline -ForegroundColor White
+    Write-Host "$env:COMPUTERNAME" -NoNewline -ForegroundColor White
     Write-Host " | " -NoNewline -ForegroundColor DarkGray
     Write-Host "User: " -NoNewline -ForegroundColor Gray
-    Write-Host "$($sysInfo.Username)" -NoNewline -ForegroundColor White
+    Write-Host "$env:USERNAME" -NoNewline -ForegroundColor White
     Write-Host " | " -NoNewline -ForegroundColor DarkGray
     Write-Host "Admin: " -NoNewline -ForegroundColor Gray
-    $adminStatus = if ($sysInfo.IsAdmin) { "Yes" } else { "No" }
-    $adminColor = if ($sysInfo.IsAdmin) { "Green" } else { "Yellow" }
+    $adminStatus = if ($isAdmin) { "Yes" } else { "No" }
+    $adminColor = if ($isAdmin) { "Green" } else { "Yellow" }
     Write-Host "$adminStatus" -NoNewline -ForegroundColor $adminColor
-    Write-Host (" " * (68 - $sysInfo.ComputerName.Length - $sysInfo.Username.Length - $adminStatus.Length)) -NoNewline
+
+    $padding = 68 - $env:COMPUTERNAME.Length - $env:USERNAME.Length - $adminStatus.Length
+    if ($padding -gt 0) {
+        Write-Host (" " * $padding) -NoNewline
+    }
     Write-Host "│" -ForegroundColor DarkGray
     Write-Host "  └─────────────────────────────────────────────────────────────────────────────┘" -ForegroundColor DarkGray
     Write-Host ""
@@ -235,12 +374,8 @@ function Show-MainMenu {
     Write-Host "🔄 Check for Updates" -ForegroundColor Cyan
     Write-Host "    [S]  " -NoNewline -ForegroundColor White
     Write-Host "⚙️  Settings & Configuration" -ForegroundColor Cyan
-    Write-Host "    [R]  " -NoNewline -ForegroundColor White
-    Write-Host "🌐 Remote Execution Mode" -ForegroundColor Cyan
-    Write-Host "    [K]  " -NoNewline -ForegroundColor White
-    Write-Host "📚 Knowledge Base" -ForegroundColor Cyan
-    Write-Host "    [W]  " -NoNewline -ForegroundColor White
-    Write-Host "🌍 Start Web Interface" -ForegroundColor Cyan
+    Write-Host "    [H]  " -NoNewline -ForegroundColor White
+    Write-Host "❓ Help & Documentation" -ForegroundColor Cyan
     Write-Host "    [Q]  " -NoNewline -ForegroundColor White
     Write-Host "❌ Quit" -ForegroundColor Cyan
     Write-Host ""
@@ -266,7 +401,7 @@ function Add-ToRecents {
     param([int]$ToolID)
 
     # Remove if already in list
-    $Script:Recents = $Script:Recents | Where-Object { $_ -ne $ToolID }
+    $Script:Recents = @($Script:Recents | Where-Object { $_ -ne $ToolID })
 
     # Add to front
     $Script:Recents = @($ToolID) + $Script:Recents
