@@ -23,7 +23,7 @@ try {
     $CorePath = "$PSScriptRoot\Core"
 
     if (Test-Path "$CorePath\MSPToolkit.Config.psm1") {
-        Import-Module "$CorePath\MSPToolkit.Config.ps1" -Force -ErrorAction Stop
+        Import-Module "$CorePath\MSPToolkit.Config.psm1" -Force -ErrorAction Stop
     }
 
     if (Test-Path "$CorePath\MSPToolkit.Logging.psm1") {
@@ -66,12 +66,12 @@ if (-not (Get-Command Write-MSPLog -ErrorAction SilentlyContinue)) {
         }
 
         $icon = switch ($Level) {
-            "SUCCESS" { "✓" }
-            "ERROR" { "✗" }
-            "WARNING" { "⚠" }
-            "INFO" { "ℹ" }
+            "SUCCESS" { "[+]" }
+            "ERROR" { "[X]" }
+            "WARNING" { "[!]" }
+            "INFO" { "[i]" }
             "HEADER" { "" }
-            default { "•" }
+            default { "[*]" }
         }
 
         if ($Level -eq "HEADER") {
@@ -117,7 +117,7 @@ if (-not (Get-Command Show-MSPError -ErrorAction SilentlyContinue)) {
 
         Write-Host ""
         Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Red
-        Write-Host "  ║                      ✗ ERROR ✗                           ║" -ForegroundColor Red
+        Write-Host "  ║                      [ERROR]                              ║" -ForegroundColor Red
         Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Red
         $msgPadded = $Message.PadRight(55)
         if ($msgPadded.Length -gt 55) { $msgPadded = $msgPadded.Substring(0, 55) }
@@ -138,7 +138,7 @@ if (-not (Get-Command Show-MSPSuccess -ErrorAction SilentlyContinue)) {
 
         Write-Host ""
         Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
-        Write-Host "  ║                     ✓ SUCCESS ✓                          ║" -ForegroundColor Green
+        Write-Host "  ║                     [SUCCESS]                             ║" -ForegroundColor Green
         Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Green
         $msgPadded = $Message.PadRight(55)
         if ($msgPadded.Length -gt 55) { $msgPadded = $msgPadded.Substring(0, 55) }
@@ -165,7 +165,7 @@ $Script:ToolCatalog = @(
         Description = "Generate comprehensive system health report"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\SystemHealthReport.ps1"
-        Icon = "📊"
+        Icon = "[RPT]"
         RequiresAdmin = $false
         SupportsRemote = $true
     },
@@ -175,7 +175,7 @@ $Script:ToolCatalog = @(
         Description = "Analyze boot and shutdown times from Event Logs"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\BootTimeAnalyzer.ps1"
-        Icon = "⏱️"
+        Icon = "[TIME]"
         RequiresAdmin = $false
         SupportsRemote = $true
     },
@@ -185,7 +185,7 @@ $Script:ToolCatalog = @(
         Description = "Generate HTML system summary for clients"
         Category = "Diagnostics"
         Path = "MSP_Tier3_Toolkit\ClientSystemSummary.ps1"
-        Icon = "📄"
+        Icon = "[HTML]"
         RequiresAdmin = $false
         SupportsRemote = $true
     },
@@ -197,7 +197,7 @@ $Script:ToolCatalog = @(
         Description = "Check user lockout and password status"
         Category = "Active Directory"
         Path = "MSP_Tier3_Toolkit\CheckADUserStatus.ps1"
-        Icon = "👤"
+        Icon = "[USER]"
         RequiresAdmin = $false
         SupportsRemote = $false
     },
@@ -209,7 +209,7 @@ $Script:ToolCatalog = @(
         Description = "Provision Office 365 licenses for users"
         Category = "Microsoft 365"
         Path = "MSP_Tier3_Toolkit\M365UserProvisioning.ps1"
-        Icon = "☁️"
+        Icon = "[O365]"
         RequiresAdmin = $false
         SupportsRemote = $false
     },
@@ -221,7 +221,7 @@ $Script:ToolCatalog = @(
         Description = "Remove user profiles older than 30 days"
         Category = "Maintenance"
         Path = "MSP_Tier3_Toolkit\CleanupOldProfiles.ps1"
-        Icon = "🧹"
+        Icon = "[CLN]"
         RequiresAdmin = $true
         SupportsRemote = $true
     },
@@ -231,7 +231,7 @@ $Script:ToolCatalog = @(
         Description = "Full system cleanup with logging"
         Category = "Maintenance"
         Path = "Cleanup Script\Cleanup-Auto.ps1"
-        Icon = "🗑️"
+        Icon = "[FULL]"
         RequiresAdmin = $true
         SupportsRemote = $true
     },
@@ -243,7 +243,7 @@ $Script:ToolCatalog = @(
         Description = "Fix stuck print jobs and restart spooler"
         Category = "Print Management"
         Path = "MSP_Tier3_Toolkit\PrinterSpoolerFix.ps1"
-        Icon = "🖨️"
+        Icon = "[PRNT]"
         RequiresAdmin = $true
         SupportsRemote = $true
     },
@@ -253,7 +253,7 @@ $Script:ToolCatalog = @(
         Description = "Deploy automatic spooler monitoring"
         Category = "Print Management"
         Path = "Auto-Check and Start Printer Spooler\CheckAndStart-Spooler.ps1"
-        Icon = "👁️"
+        Icon = "[MON]"
         RequiresAdmin = $true
         SupportsRemote = $true
     },
@@ -265,7 +265,7 @@ $Script:ToolCatalog = @(
         Description = "Test and repair network drive mappings"
         Category = "Network"
         Path = "MSP_Tier3_Toolkit\FixMappedDrives.ps1"
-        Icon = "🔌"
+        Icon = "[NET]"
         RequiresAdmin = $false
         SupportsRemote = $true
     },
@@ -275,7 +275,7 @@ $Script:ToolCatalog = @(
         Description = "Uninstall software silently"
         Category = "Software"
         Path = "MSP_Tier3_Toolkit\RemoteUninstall.ps1"
-        Icon = "📦"
+        Icon = "[UNIN]"
         RequiresAdmin = $true
         SupportsRemote = $true
     },
@@ -287,7 +287,7 @@ $Script:ToolCatalog = @(
         Description = "Reset Windows Update components"
         Category = "Windows Update"
         Path = "MSP_Tier3_Toolkit\WindowsUpdateFix.ps1"
-        Icon = "🔄"
+        Icon = "[UPDT]"
         RequiresAdmin = $true
         SupportsRemote = $true
     }
@@ -369,15 +369,15 @@ function Show-MainMenu {
     Write-Host " ═══╗" -ForegroundColor Magenta
     Write-Host ""
     Write-Host "    [D]  " -NoNewline -ForegroundColor White
-    Write-Host "📈 Dashboard & Reports" -ForegroundColor Cyan
+    Write-Host "[DASH] Dashboard & Reports" -ForegroundColor Cyan
     Write-Host "    [U]  " -NoNewline -ForegroundColor White
-    Write-Host "🔄 Check for Updates" -ForegroundColor Cyan
+    Write-Host "[UPDT] Check for Updates" -ForegroundColor Cyan
     Write-Host "    [S]  " -NoNewline -ForegroundColor White
-    Write-Host "⚙️  Settings & Configuration" -ForegroundColor Cyan
+    Write-Host "[CFG]  Settings & Configuration" -ForegroundColor Cyan
     Write-Host "    [H]  " -NoNewline -ForegroundColor White
-    Write-Host "❓ Help & Documentation" -ForegroundColor Cyan
+    Write-Host "[HELP] Help & Documentation" -ForegroundColor Cyan
     Write-Host "    [Q]  " -NoNewline -ForegroundColor White
-    Write-Host "❌ Quit" -ForegroundColor Cyan
+    Write-Host "[EXIT] Quit" -ForegroundColor Cyan
     Write-Host ""
 
     if ($Script:Recents.Count -gt 0) {
@@ -387,7 +387,7 @@ function Show-MainMenu {
         Write-Host ""
         $recentTools = $Script:ToolCatalog | Where-Object { $_.ID -in $Script:Recents[0..4] }
         foreach ($tool in $recentTools) {
-            Write-Host "    ⭐ " -NoNewline
+            Write-Host "    [*] " -NoNewline
             Write-Host "$($tool.Icon) $($tool.Name)" -ForegroundColor Gray
         }
         Write-Host ""
@@ -675,7 +675,7 @@ do {
             Write-Host ""
             Write-Host "  ╔════════════════════════════════════════════════════╗" -ForegroundColor Cyan
             Write-Host "  ║                                                    ║" -ForegroundColor Cyan
-            Write-Host "  ║        Thanks for using MSP Toolkit! 🚀           ║" -ForegroundColor Cyan
+            Write-Host "  ║        Thanks for using MSP Toolkit!              ║" -ForegroundColor Cyan
             Write-Host "  ║                                                    ║" -ForegroundColor Cyan
             Write-Host "  ╚════════════════════════════════════════════════════╝" -ForegroundColor Cyan
             Write-Host ""
