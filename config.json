@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "company": {
+    "name": "Your MSP Company",
+    "domain": "yourdomain.local",
+    "timezone": "Eastern Standard Time"
+  },
+  "paths": {
+    "logs": "C:\\MSPToolkit\\Logs",
+    "reports": "C:\\MSPToolkit\\Reports",
+    "cache": "C:\\MSPToolkit\\Cache",
+    "templates": "C:\\MSPToolkit\\Templates",
+    "knowledgeBase": "C:\\MSPToolkit\\KnowledgeBase",
+    "backups": "C:\\MSPToolkit\\Backups"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "Info",
+    "maxLogSizeMB": 50,
+    "retentionDays": 90,
+    "logToFile": true,
+    "logToConsole": true,
+    "enableColors": true
+  },
+  "activeDirectory": {
+    "defaultDomain": "yourdomain.local",
+    "defaultOU": "OU=Users,DC=yourdomain,DC=local",
+    "domainController": ""
+  },
+  "microsoft365": {
+    "defaultUsageLocation": "US",
+    "defaultLicense": "ENTERPRISEPACK",
+    "tenantId": "",
+    "connectOnStartup": false
+  },
+  "cleanup": {
+    "profileAgeDays": 30,
+    "tempFilesAgeDays": 7,
+    "diskCleanupThresholdGB": 10,
+    "autoCleanupEnabled": false
+  },
+  "monitoring": {
+    "printSpoolerCheckIntervalMinutes": 5,
+    "diskSpaceThresholdPercent": 15,
+    "memoryThresholdPercent": 90,
+    "autoHealEnabled": true,
+    "enableAlerts": true
+  },
+  "notifications": {
+    "emailEnabled": false,
+    "smtpServer": "",
+    "smtpPort": 587,
+    "fromAddress": "",
+    "toAddresses": [],
+    "teamsWebhookUrl": "",
+    "slackWebhookUrl": ""
+  },
+  "remoteExecution": {
+    "defaultCredentialName": "",
+    "timeout": 300,
+    "maxConcurrentJobs": 10,
+    "useCredSSP": false
+  },
+  "updates": {
+    "autoCheckForUpdates": true,
+    "updateBranch": "main",
+    "gitRepoUrl": "https://github.com/dirtysouthalpha/msptier3toolkit.git",
+    "backupBeforeUpdate": true
+  },
+  "webInterface": {
+    "enabled": false,
+    "port": 8080,
+    "useSSL": false,
+    "allowRemoteConnections": false,
+    "apiKey": ""
+  },
+  "rmmIntegration": {
+    "enabled": false,
+    "platform": "",
+    "apiEndpoint": "",
+    "apiKey": "",
+    "autoCreateTickets": false,
+    "updateTicketStatus": false
+  },
+  "ui": {
+    "theme": "dark",
+    "showBanner": true,
+    "enableAnimations": true,
+    "compactMode": false,
+    "language": "en-US"
+  },
+  "security": {
+    "requireAdminForScripts": true,
+    "auditScriptExecution": true,
+    "encryptSensitiveData": true,
+    "allowRemoteExecution": true
+  },
+  "advanced": {
+    "debugMode": false,
+    "enableTelemetry": false,
+    "cacheResults": true,
+    "parallelProcessing": true,
+    "maxThreads": 5
+  }
+}
