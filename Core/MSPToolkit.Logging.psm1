@@ -103,23 +103,23 @@ function Write-MSPLog {
 
         switch ($Level) {
             'SUCCESS' {
-                Write-Host "✓ " -ForegroundColor Green -NoNewline
+                Write-Host "[+] " -ForegroundColor Green -NoNewline
                 Write-Host $Message -ForegroundColor $color
             }
             'ERROR' {
-                Write-Host "✗ " -ForegroundColor Red -NoNewline
+                Write-Host "[X] " -ForegroundColor Red -NoNewline
                 Write-Host $Message -ForegroundColor $color
             }
             'WARNING' {
-                Write-Host "⚠ " -ForegroundColor Yellow -NoNewline
+                Write-Host "[!] " -ForegroundColor Yellow -NoNewline
                 Write-Host $Message -ForegroundColor $color
             }
             'INFO' {
-                Write-Host "ℹ " -ForegroundColor Cyan -NoNewline
+                Write-Host "[i] " -ForegroundColor Cyan -NoNewline
                 Write-Host $Message -ForegroundColor $color
             }
             'DEBUG' {
-                Write-Host "🔍 " -NoNewline
+                Write-Host "[D] " -NoNewline
                 Write-Host $Message -ForegroundColor $color
             }
             'HEADER' {
@@ -211,9 +211,10 @@ function Show-MSPSuccess {
 
     Write-Host ""
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "  ║                     ✓ SUCCESS ✓                          ║" -ForegroundColor Green
+    Write-Host "  ║                     [SUCCESS]                             ║" -ForegroundColor Green
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Green
-    Write-Host "  ║  $($Message.PadRight(55))  ║" -ForegroundColor Green
+    $msgPadded = if ($Message.Length -gt 55) { $Message.Substring(0, 55) } else { $Message.PadRight(55) }
+    Write-Host "  ║  $msgPadded  ║" -ForegroundColor Green
     Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
 }
@@ -231,12 +232,15 @@ function Show-MSPError {
 
     Write-Host ""
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "  ║                      ✗ ERROR ✗                           ║" -ForegroundColor Red
+    Write-Host "  ║                      [ERROR]                              ║" -ForegroundColor Red
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Red
-    Write-Host "  ║  $($Message.PadRight(55))  ║" -ForegroundColor Red
+    $msgPadded = if ($Message.Length -gt 55) { $Message.Substring(0, 55) } else { $Message.PadRight(55) }
+    Write-Host "  ║  $msgPadded  ║" -ForegroundColor Red
     if ($Details) {
         Write-Host "  ║                                                           ║" -ForegroundColor Red
-        Write-Host "  ║  Details: $($Details.Substring(0, [Math]::Min(47, $Details.Length)).PadRight(47))  ║" -ForegroundColor Red
+        $detailsText = "Details: $Details"
+        $detailsPadded = if ($detailsText.Length -gt 55) { $detailsText.Substring(0, 55) } else { $detailsText.PadRight(55) }
+        Write-Host "  ║  $detailsPadded  ║" -ForegroundColor Red
     }
     Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Red
     Write-Host ""

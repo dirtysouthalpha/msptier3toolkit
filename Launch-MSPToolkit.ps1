@@ -71,7 +71,7 @@ function Show-SuccessBox {
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
     Write-Host "  ║                     [SUCCESS]                             ║" -ForegroundColor Green
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Green
-    $padded = $Message.PadRight(55).Substring(0, 55)
+    $padded = if ($Message.Length -gt 55) { $Message.Substring(0, 55) } else { $Message.PadRight(55) }
     Write-Host "  ║  $padded  ║" -ForegroundColor Green
     Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
@@ -83,11 +83,12 @@ function Show-ErrorBox {
     Write-Host "  ╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Red
     Write-Host "  ║                      [ERROR]                              ║" -ForegroundColor Red
     Write-Host "  ╠═══════════════════════════════════════════════════════════╣" -ForegroundColor Red
-    $padded = $Message.PadRight(55).Substring(0, 55)
+    $padded = if ($Message.Length -gt 55) { $Message.Substring(0, 55) } else { $Message.PadRight(55) }
     Write-Host "  ║  $padded  ║" -ForegroundColor Red
     if ($Details) {
         Write-Host "  ║                                                           ║" -ForegroundColor Red
-        $detailPadded = ("Details: " + $Details).PadRight(55).Substring(0, 55)
+        $detailText = "Details: " + $Details
+        $detailPadded = if ($detailText.Length -gt 55) { $detailText.Substring(0, 55) } else { $detailText.PadRight(55) }
         Write-Host "  ║  $detailPadded  ║" -ForegroundColor Red
     }
     Write-Host "  ╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Red
