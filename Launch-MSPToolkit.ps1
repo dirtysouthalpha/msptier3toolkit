@@ -466,11 +466,11 @@ do {
         '^[Qq]$' {
             Clear-Host
             Write-Host ""
-            Write-Host "  ╔════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-            Write-Host "  ║                                                        ║" -ForegroundColor Cyan
-            Write-Host "  ║        Thanks for using MSP Toolkit!                  ║" -ForegroundColor Cyan
-            Write-Host "  ║                                                        ║" -ForegroundColor Cyan
-            Write-Host "  ╚════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+            Write-Host "  +========================================================+" -ForegroundColor Cyan
+            Write-Host "  |                                                        |" -ForegroundColor Cyan
+            Write-Host "  |        Thanks for using MSP Toolkit!                  |" -ForegroundColor Cyan
+            Write-Host "  |                                                        |" -ForegroundColor Cyan
+            Write-Host "  +========================================================+" -ForegroundColor Cyan
             Write-Host ""
             exit
         }
