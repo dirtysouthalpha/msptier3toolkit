@@ -1,0 +1,42 @@
+{
+  "templateName": "Monthly Workstation Maintenance",
+  "description": "Standard monthly maintenance routine for workstations",
+  "category": "Maintenance",
+  "scripts": [
+    {
+      "id": 1,
+      "name": "System Health Report",
+      "parameters": {}
+    },
+    {
+      "id": 7,
+      "name": "Comprehensive Cleanup",
+      "parameters": {
+        "IncludeTempFiles": true,
+        "ClearPrintQueue": true,
+        "RunDiskCleanup": true
+      }
+    },
+    {
+      "id": 6,
+      "name": "Cleanup Old Profiles",
+      "parameters": {
+        "DaysOld": 30
+      }
+    },
+    {
+      "id": 12,
+      "name": "Windows Update Fix",
+      "parameters": {
+        "ForceUpdateCheck": true
+      }
+    }
+  ],
+  "settings": {
+    "runSequentially": true,
+    "continueOnError": true,
+    "generateReport": true,
+    "emailReport": true
+  },
+  "notes": "Run this template monthly on all workstations during maintenance windows."
+}
