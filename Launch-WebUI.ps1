@@ -416,7 +416,7 @@ try {
             <p><strong>Computer:</strong> $env:COMPUTERNAME</p>
             <p><strong>User:</strong> $env:USERNAME</p>
             <p><strong>PowerShell Version:</strong> $($PSVersionTable.PSVersion)</p>
-            <p><strong>Time:</strong> $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
+            <p><strong>Time:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
         <div class="stat-box">
             <h3>Web Interface Status</h3>
