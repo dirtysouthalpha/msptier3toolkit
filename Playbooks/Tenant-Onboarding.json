@@ -1,0 +1,18 @@
+{
+  "name": "Tenant-Onboarding",
+  "version": "1.0.0",
+  "description": "New tenant onboarding -- system inventory, security baseline, backup verification, and documentation generation",
+  "category": "Lifecycle",
+  "maxParallel": 3,
+  "timeoutMin": 90,
+  "steps": [
+    { "id": "inventory", "command": "& 'Export-AssetInventory.ps1'", "description": "Full asset inventory export", "dependsOn": [], "retryCount": 1, "timeoutMin": 20 },
+    { "id": "system_health", "command": "& 'Get-QuickTriageReport.ps1'", "description": "System health baseline", "dependsOn": [], "retryCount": 1 },
+    { "id": "security", "command": "& 'Get-SecurityPostureScore.ps1'", "description": "Security posture baseline", "dependsOn": [], "retryCount": 0 },
+    { "id": "patches", "command": "& 'Get-PatchCompliance.ps1'", "description": "Patch compliance check", "dependsOn": [], "retryCount": 1 },
+    { "id": "backup_check", "command": "& 'Get-BackupStatus.ps1'", "description": "Backup status verification", "dependsOn": [], "retryCount": 1 },
+    { "id": "vss", "command": "& 'Get-VSSWriterHealth.ps1'", "description": "VSS writer health", "dependsOn": [], "retryCount": 0 },
+    { "id": "dashboard", "command": "& 'New-MSPDashboard'", "description": "Generate executive dashboard", "dependsOn": ["inventory", "system_health", "security", "patches"], "retryCount": 0 },
+    { "id": "report", "command": "& 'New-MSPComplianceReport' -Framework CIS8", "description": "Generate compliance report", "dependsOn": ["inventory", "security"], "retryCount": 0 }
+  ]
+}

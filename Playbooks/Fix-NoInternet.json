@@ -1,0 +1,39 @@
+{
+    "schema": "msp-playbook/v1",
+    "name": "Fix-NoInternet",
+    "version": "1.0",
+    "description": "Workstation can't reach the internet -- methodical layer-by-layer recovery.",
+    "stopOnSuccess": true,
+    "requireAdmin": true,
+    "verify": {
+        "script": "Test-NetConnection 1.1.1.1 -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue"
+    },
+    "steps": [
+        {
+            "name": "ipconfig-renew",
+            "script": "ipconfig /release | Out-Null; ipconfig /renew | Out-Null",
+            "verify": { "script": "(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.PrefixOrigin -eq 'Dhcp' -and $_.IPAddress -notlike '169.254.*' }).Count -gt 0" },
+            "timeoutSec": 30
+        },
+        {
+            "name": "flush-dns",
+            "script": "ipconfig /flushdns | Out-Null; Restart-Service Dnscache -Force -ErrorAction SilentlyContinue",
+            "timeoutSec": 15
+        },
+        {
+            "name": "reset-arp",
+            "script": "arp -d * 2>&1 | Out-Null",
+            "timeoutSec": 10
+        },
+        {
+            "name": "winsock-reset",
+            "script": "netsh winsock reset | Out-Null; netsh int ip reset | Out-Null",
+            "timeoutSec": 30
+        },
+        {
+            "name": "restart-nics",
+            "script": "Get-NetAdapter -Physical | Where-Object Status -eq 'Up' | ForEach-Object { Disable-NetAdapter -Name $_.Name -Confirm:$false; Start-Sleep -Seconds 2; Enable-NetAdapter -Name $_.Name -Confirm:$false }",
+            "timeoutSec": 60
+        }
+    ]
+}

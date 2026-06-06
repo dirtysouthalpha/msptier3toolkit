@@ -1,0 +1,14 @@
+{
+  "name": "SQL-Server-Health",
+  "version": "1.0.0",
+  "description": "SQL Server health check -- databases, backups, wait stats, error logs, and dependent services",
+  "category": "Apps",
+  "maxParallel": 2,
+  "timeoutMin": 25,
+  "steps": [
+    { "id": "sql_health", "command": "& 'Get-SQLServerHealth.ps1'", "description": "SQL Server database and backup health", "dependsOn": [], "retryCount": 1, "timeoutMin": 10 },
+    { "id": "services", "command": "& 'Get-ServiceDependencyMap.ps1' -FocusServices 'MSSQLSERVER'", "description": "SQL service dependencies", "dependsOn": [], "retryCount": 0 },
+    { "id": "perf", "command": "& 'Get-AppPerformanceBaseline.ps1' -TargetProcesses 'sqlservr' -SampleCount 3", "description": "SQL Server performance baseline", "dependsOn": ["sql_health"], "retryCount": 0 },
+    { "id": "backup", "command": "& 'Get-BackupStatus.ps1'", "description": "Server backup verification", "dependsOn": [], "retryCount": 0 }
+  ]
+}

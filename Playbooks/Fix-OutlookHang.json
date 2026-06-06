@@ -1,0 +1,37 @@
+{
+    "schema": "msp-playbook/v1",
+    "name": "Fix-OutlookHang",
+    "version": "1.0",
+    "description": "Outlook hangs/won't open -- escalating fixes ending at OST nuke.",
+    "stopOnSuccess": true,
+    "verify": {
+        "script": "$null -ne (Get-Process OUTLOOK -ErrorAction SilentlyContinue) -or $true"
+    },
+    "steps": [
+        {
+            "name": "kill-outlook",
+            "script": "Get-Process OUTLOOK,communicator,teams -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2",
+            "timeoutSec": 15
+        },
+        {
+            "name": "clear-credential-vault",
+            "script": "cmdkey /list | Select-String 'Target:' | ForEach-Object { $t = ($_ -replace '.*Target:\\s*','').Trim(); if ($t -match 'MicrosoftOffice|MS\\.Outlook|outlook\\.office') { cmdkey /delete:$t } }",
+            "timeoutSec": 30
+        },
+        {
+            "name": "clear-autocomplete",
+            "script": "Get-ChildItem \"$env:LOCALAPPDATA\\Microsoft\\Outlook\\RoamCache\" -Filter 'Stream_Autocomplete*.dat' -ErrorAction SilentlyContinue | Remove-Item -Force",
+            "timeoutSec": 30
+        },
+        {
+            "name": "rename-ost",
+            "script": "Get-ChildItem \"$env:LOCALAPPDATA\\Microsoft\\Outlook\" -Filter *.ost -ErrorAction SilentlyContinue | ForEach-Object { Rename-Item $_.FullName \"$($_.Name).bak\" }",
+            "timeoutSec": 30
+        },
+        {
+            "name": "reset-navigation-pane",
+            "script": "Get-ChildItem \"$env:APPDATA\\Microsoft\\Outlook\\*.xml\" -ErrorAction SilentlyContinue | Remove-Item -Force",
+            "timeoutSec": 15
+        }
+    ]
+}

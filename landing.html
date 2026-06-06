@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Sentinel Recon -- Cross-Platform MSP Diagnostics & Automation. 161 scripts, 110 functions, 15 categories. Discover. Diagnose. Deploy.">
+<meta property="og:title" content="Sentinel Recon -- Cross-Platform MSP Diagnostics & Automation">
+<meta property="og:description" content="Discover. Diagnose. Deploy. -- The complete field toolkit for MSP Tier-3 engineers.">
+<meta property="og:image" content="assets/logo.svg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sentinel Recon -- Cross-Platform MSP Diagnostics & Automation">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='none' stroke='%2300F0FF' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%2300F0FF' stroke-width='1.5'/><line x1='16' y1='2' x2='16' y2='30' stroke='%2300F0FF' stroke-width='1.5'/><circle cx='16' cy='16' r='3' fill='%2300F0FF'/></svg>">
+<title>Sentinel Recon -- Cross-Platform MSP Diagnostics & Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050608;--bg2:#0A0C10;--bg3:#111418;
+  --cyan:#00F0FF;--lime:#95E400;--amber:#FBBC00;--red:#ff3b3b;
+  --text:#e2e2e8;--muted:#849495;--border:#1a2530;
+  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+section{padding:80px 24px;max-width:1200px;margin:0 auto}
+
+/* ── Navigation ── */
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(5,6,8,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:18px;text-decoration:none;color:var(--text)}
+.nav-brand svg{width:28px;height:28px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{background:var(--cyan);color:#050608;border:none;padding:8px 18px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font-head);transition:filter .15s}
+.nav-cta:hover{filter:brightness(1.15)}
+
+/* ── Hero ── */
+.hero{text-align:center;padding:140px 24px 100px;max-width:900px}
+.hero-logo{margin-bottom:32px}
+.hero-logo svg{width:120px;height:120px;filter:drop-shadow(0 0 40px rgba(0,240,255,.4))}
+.hero h1{font-family:var(--font-head);font-size:clamp(36px,6vw,64px);font-weight:700;line-height:1.1;margin-bottom:16px}
+.hero h1 span{color:var(--cyan)}
+.hero .tagline{font-size:20px;color:var(--muted);margin-bottom:32px;font-weight:400}
+.hero .tagline em{color:var(--cyan);font-style:normal}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;font-family:var(--font-head);font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;transition:all .2s;border:none}
+.btn-primary{background:var(--cyan);color:#050608}
+.btn-primary:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 8px 30px rgba(0,240,255,.3)}
+.btn-outline{background:transparent;color:var(--cyan);border:2px solid var(--cyan)}
+.btn-outline:hover{background:rgba(0,240,255,.08);transform:translateY(-1px)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:56px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat .num{font-family:var(--font-head);font-size:40px;font-weight:700;color:var(--cyan)}
+.hero-stat .lbl{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* ── Section headers ── */
+.section-label{font-family:var(--font-head);font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--cyan);margin-bottom:12px}
+.section-title{font-family:var(--font-head);font-size:clamp(28px,4vw,42px);font-weight:700;margin-bottom:16px;line-height:1.2}
+.section-sub{font-size:17px;color:var(--muted);max-width:600px;margin-bottom:48px}
+
+/* ── Features grid ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.feature-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all .2s}
+.feature-card:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,240,255,.08)}
+.feature-card .icon{font-size:28px;margin-bottom:14px}
+.feature-card h3{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--muted);line-height:1.6}
+.feature-card .count{display:inline-block;margin-top:12px;font-family:var(--font-head);font-size:12px;color:var(--cyan);background:rgba(0,240,255,.1);padding:3px 10px;border-radius:20px}
+
+/* ── How it works ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px;position:relative}
+.step-card .step-num{font-family:var(--font-head);font-size:48px;font-weight:700;color:rgba(0,240,255,.15);position:absolute;top:16px;right:20px;line-height:1}
+.step-card h3{font-family:var(--font-head);font-size:17px;font-weight:700;margin-bottom:8px}
+.step-card p{font-size:14px;color:var(--muted)}
+.step-card code{display:block;margin-top:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:'Consolas','Monaco',monospace;font-size:12px;color:var(--lime);overflow-x:auto}
+
+/* ── Platform badges ── */
+.platforms{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.platform-badge{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 24px;font-family:var(--font-head);font-weight:600;font-size:15px}
+.platform-badge.win{border-color:var(--lime);color:var(--lime)}
+.platform-badge.mac{border-color:var(--cyan);color:var(--cyan)}
+.platform-badge.linux{border-color:var(--amber);color:var(--amber)}
+.platform-badge .dot{width:10px;height:10px;border-radius:50%}
+.platform-badge.win .dot{background:var(--lime)}
+.platform-badge.mac .dot{background:var(--cyan)}
+.platform-badge.linux .dot{background:var(--amber)}
+
+/* ── Code demo ── */
+.code-demo{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;max-width:720px;margin:0 auto}
+.code-demo .bar{display:flex;gap:8px;padding:14px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.code-demo .bar span{width:12px;height:12px;border-radius:50%}
+.code-demo .bar span:nth-child(1){background:var(--red)}
+.code-demo .bar span:nth-child(2){background:var(--amber)}
+.code-demo .bar span:nth-child(3){background:var(--lime)}
+.code-demo pre{padding:20px 24px;font-family:'Consolas','Monaco',monospace;font-size:13px;line-height:1.7;color:var(--text);overflow-x:auto}
+.code-demo .kw{color:var(--cyan)}.code-demo .str{color:var(--lime)}.code-demo .cmt{color:var(--muted)}
+
+/* ── CTA ── */
+.cta-section{text-align:center;background:linear-gradient(180deg,transparent,rgba(0,240,255,.04),transparent);padding:100px 24px}
+.cta-section .btn-primary{font-size:17px;padding:16px 36px}
+
+/* ── Footer ── */
+footer{text-align:center;padding:40px 24px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+footer a{color:var(--cyan);text-decoration:none}
+footer .brand-row{display:flex;justify-content:center;gap:32px;margin-bottom:16px;flex-wrap:wrap}
+
+/* ── Animation ── */
+@keyframes scanPulse{0%,100%{opacity:.6}50%{opacity:1}}
+.scan-anim{animation:scanPulse 2s ease-in-out infinite}
+
+/* ── Responsive ── */
+.mobile-menu-btn{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:4px 8px}
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,6,8,.98);backdrop-filter:blur(12px);flex-direction:column;padding:16px 24px;gap:16px;border-bottom:1px solid var(--border)}
+  .nav-links.open{display:flex}
+  .mobile-menu-btn{display:block}
+  .hero{padding:100px 24px 60px}
+  .hero-stats{gap:24px}
+  .hero-stat .num{font-size:28px}
+  .features-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .platforms{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="#00F0FF" stroke-width="2"/><line x1="2" y1="16" x2="30" y2="16" stroke="#00F0FF" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="30" stroke="#00F0FF" stroke-width="1.5"/><circle cx="16" cy="16" r="3" fill="#00F0FF"/></svg>
+      Sentinel Recon
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#deploy">Deploy</a>
+    </div>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <button class="nav-cta" onclick="document.getElementById('deploy').scrollIntoView({behavior:'smooth'})">Download</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-logo">
+    <svg viewBox="0 0 512 512" width="120" height="120">
+      <circle cx="256" cy="256" r="220" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.3"/>
+      <circle cx="256" cy="256" r="160" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.5"/>
+      <circle cx="256" cy="256" r="100" fill="none" stroke="#00F0FF" stroke-width="1.5" opacity="0.4"/>
+      <line x1="96" y1="256" x2="416" y2="256" stroke="#00F0FF" stroke-width="2"/>
+      <line x1="256" y1="96" x2="256" y2="416" stroke="#00F0FF" stroke-width="2"/>
+      <line x1="116" y1="256" x2="136" y2="256" stroke="#00F0FF" stroke-width="4"/>
+      <line x1="376" y1="256" x2="396" y2="256" stroke="#00F0FF" stroke-width="4"/>
+      <line x1="256" y1="116" x2="256" y2="136" stroke="#00F0FF" stroke-width="4"/>
+      <line x1="256" y1="376" x2="256" y2="396" stroke="#00F0FF" stroke-width="4"/>
+      <circle cx="256" cy="256" r="8" fill="#00F0FF"/>
+      <circle cx="256" cy="256" r="4" fill="#050608"/>
+      <path d="M 140 200 A 120 120 0 0 1 360 200" fill="none" stroke="#00F0FF" stroke-width="3" class="scan-anim"/>
+      <circle cx="200" cy="165" r="5" fill="#00F0FF" class="scan-anim"/>
+    </svg>
+  </div>
+  <h1><span>Sentinel Recon</span></h1>
+  <p class="tagline">Cross-Platform MSP Diagnostics & Automation<br><em>Discover. Diagnose. Deploy.</em></p>
+  <div class="hero-ctas">
+    <a href="#deploy" class="btn btn-primary">Download -- 1.25 MB Portable</a>
+    <a href="#how" class="btn btn-outline">See How It Works</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">161</div><div class="lbl">Files</div></div>
+    <div class="hero-stat"><div class="num">110</div><div class="lbl">Functions</div></div>
+    <div class="hero-stat"><div class="num">15</div><div class="lbl">Categories</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">Platforms</div></div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="section-label">What's Inside</div>
+  <h2 class="section-title">Everything a Tier-3 engineer needs.<br>One portable file.</h2>
+  <p class="section-sub">From AD replication health to Linux kernel hardening -- 89 diagnostic scripts across 15 categories, all sharing the same structured result format.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="icon">🛡️</div>
+      <h3>Security Suite</h3>
+      <p>CIS benchmarks, firewall audits, certificate inventory, LAPS, Credential Guard, BitLocker, Exploit Guard -- 13 tools.</p>
+      <span class="count">13 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🌐</div>
+      <h3>Network Diagnostics</h3>
+      <p>Packet capture, topology mapping, WiFi surveys, DNS deep dives, VPN health, throughput testing, SNMP walks.</p>
+      <span class="count">15 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🏢</div>
+      <h3>DC Operations</h3>
+      <p>AD replication, FSMO audit, Kerberos health, trust validation, DHCP scope reports, SYSVOL health -- 10 tools built for domain controllers.</p>
+      <span class="count">10 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">☁️</div>
+      <h3>Cloud & M365</h3>
+      <p>Entra Connect sync health, Intune compliance, Conditional Access audits, Azure VM inventory, Exchange Online, Teams CQD.</p>
+      <span class="count">6 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🖥️</div>
+      <h3>App & Database Health</h3>
+      <p>SQL Server, IIS, Exchange, print servers, service dependency mapping, performance baselines -- production-ready.</p>
+      <span class="count">6 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💾</div>
+      <h3>Backup & DR</h3>
+      <p>VSS writer health, backup status, shadow copies, system state integrity, restore readiness, recovery partitions.</p>
+      <span class="count">6 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔗</div>
+      <h3>RMM Integration</h3>
+      <p>NinjaOne, ConnectWise, Datto, Autotask health checks + bi-directional ticketing pipeline.</p>
+      <span class="count">4 platforms</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🐧</div>
+      <h3>macOS & Linux</h3>
+      <p>Full parity -- Mac System Reports, Linux kernel hardening, Docker health, package audits, SSH hardening.</p>
+      <span class="count">18 tools</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚙️</div>
+      <h3>Orchestration Engine</h3>
+      <p>DAG workflow engine with parallel execution, maintenance windows, change management, and persisted state.</p>
+      <span class="count">10 functions</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📊</div>
+      <h3>BI & Reporting</h3>
+      <p>Executive dashboards, SLA tracking, cost optimization, compliance reports, multi-format export.</p>
+      <span class="count">7 functions</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔌</div>
+      <h3>Webhooks & Plugins</h3>
+      <p>Plugin marketplace, custom tool builder, OpenAPI spec, HMAC-signed webhook dispatch.</p>
+      <span class="count">8 functions</span>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📋</div>
+      <h3>14 Playbooks</h3>
+      <p>Pre-built JSON decision trees -- AD Health Check, Full Security Audit, Tenant Onboarding, Weekly Maintenance, and more.</p>
+      <span class="count">14 playbooks</span>
+    </div>
+  </div>
+</section>
+
+<!-- Console Preview -->
+<section id="preview">
+  <div class="section-label">Console Preview</div>
+  <h2 class="section-title">See It In Action</h2>
+  <p class="section-sub">The Sentinel Recon web console -- dark theme, collapsible sidebar, live metrics, and structured JSON results. Installable as a PWA.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="background:var(--bg2);padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--cyan)"></span>
+        Sentinel Recon Console -- v25
+      </div>
+      <div style="display:grid;grid-template-columns:180px 1fr;min-height:200px">
+        <div style="background:var(--bg2);border-right:1px solid var(--border);padding:8px">
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:6px 8px">Diagnostics</div>
+          <div style="padding:4px 8px;font-size:11px;border-left:2px solid var(--cyan);color:var(--cyan);margin:2px 0">System Health Report</div>
+          <div style="padding:4px 8px;font-size:11px;color:var(--muted);margin:2px 0">Reboot Pending Check</div>
+          <div style="padding:4px 8px;font-size:11px;color:var(--muted);margin:2px 0">Performance Baseline</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:6px 8px;margin-top:8px">Security</div>
+          <div style="padding:4px 8px;font-size:11px;border-left:2px solid var(--cyan);color:var(--lime);margin:2px 0">Security Posture Score *</div>
+          <div style="padding:4px 8px;font-size:11px;color:var(--muted);margin:2px 0">Full CIS Benchmark</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:6px 8px;margin-top:8px">DC</div>
+          <div style="padding:4px 8px;font-size:11px;color:var(--muted);margin:2px 0">AD Replication</div>
+          <div style="padding:4px 8px;font-size:11px;color:var(--muted);margin:2px 0">FSMO Role Audit</div>
+        </div>
+        <div style="padding:12px">
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;margin-bottom:8px">Security Posture Score <span style="font-size:10px;background:rgba(0,240,255,.1);color:var(--cyan);padding:2px 8px;border-radius:8px;font-weight:400">ADMIN</span></div>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <button style="background:var(--cyan);color:var(--bg);border:none;padding:6px 12px;border-radius:6px;font-weight:600;font-size:11px;cursor:pointer">▶ Run</button>
+            <button style="background:var(--bg);color:var(--text);border:1px solid var(--border);padding:6px 12px;border-radius:6px;font-size:11px">Export</button>
+            <button style="background:var(--bg);color:var(--text);border:1px solid var(--border);padding:6px 12px;border-radius:6px;font-size:11px">Copy</button>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:Consolas,monospace;font-size:10px;line-height:1.6;color:var(--text);max-height:180px;overflow-y:auto">
+            <span style="color:var(--muted)">{</span><br>
+            <span style="color:var(--muted)">  "Tool":</span> <span style="color:var(--lime)">"Get-SecurityPostureScore"</span>,<br>
+            <span style="color:var(--muted)">  "Status":</span> <span style="color:var(--amber)">"Warning"</span>,<br>
+            <span style="color:var(--muted)">  "Score":</span> <span style="color:var(--cyan);font-weight:700">72</span>,<br>
+            <span style="color:var(--muted)">  "MaxScore":</span> 100,<br>
+            <span style="color:var(--muted)">  "Passed":</span> 9,<br>
+            <span style="color:var(--muted)">  "Failed":</span> 3,<br>
+            <span style="color:var(--muted)">  "Checks":</span> [<br>
+            <span style="color:var(--lime)">    {"Name":"BitLocker","Pass":true}</span>,<br>
+            <span style="color:var(--lime)">    {"Name":"AV Status","Pass":true}</span>,<br>
+            <span style="color:var(--red)">    {"Name":"FW Rules","Pass":false}</span>,<br>
+            <span style="color:var(--muted)">    ...</span><br>
+            <span style="color:var(--muted)">  ]</span><br>
+            <span style="color:var(--muted)">}</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-top:1px solid var(--border);padding:6px 12px;font-size:10px;color:var(--muted);display:flex;justify-content:space-between">
+        <span>Ready</span><span>WS-DC01</span><span>Ctrl+K Search · Ctrl+R Run · Ctrl+E Export</span>
+      </div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="background:var(--bg2);padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--cyan)"></span>
+        Terminal -- Cross-Platform
+      </div>
+      <div style="padding:16px;font-family:Consolas,monospace;font-size:10px;line-height:1.7;min-height:200px">
+        <span style="color:var(--muted)">PS C:\></span> <span style="color:var(--cyan)">Import-Module</span> <span style="color:var(--text)">.\Core\MSPToolkit.psd1</span><br>
+        <span style="color:var(--muted)">PS C:\></span> <span style="color:var(--lime)">Get-SecurityPostureScore</span><br><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">Security Posture: 72/100</span><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">BitLocker: Protected</span><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">AV: Running (fresh)</span><br>
+        <span style="color:var(--amber)">[!]</span> <span style="color:var(--amber)">Firewall: 3 risky inbound rules</span><br>
+        <span style="color:var(--red)">[X]</span> <span style="color:var(--red)">LAPS: Not deployed</span><br>
+        <span style="color:var(--red)">[X]</span> <span style="color:var(--red)">Credential Guard: Disabled</span><br><br>
+        <span style="color:var(--muted)">PS C:\></span> <span style="color:var(--cyan)">Invoke-MSPFleet</span> <span style="color:var(--text)">-ComputerList servers.csv</span><br>
+        <span style="color:var(--muted)">PS C:\></span> <span style="color:var(--text)">Fanning out to 47 servers...</span><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">45/47 completed successfully</span><br><br>
+        <span style="color:var(--muted)">── Cross-Platform ──</span><br>
+        <span style="color:var(--muted)">PS /home/admin></span> <span style="color:var(--lime)">Get-LinuxSecurityPosture</span><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">Firewall: active | SELinux: enforcing | SSH: key-only</span><br>
+        <span style="color:var(--muted)">PS /Users/admin></span> <span style="color:var(--lime)">Get-MacSystemReport</span><br>
+        <span style="color:var(--lime)">[+]</span> <span style="color:var(--text)">macOS 14.5 · Apple M3 · FileVault: On · SIP: Enabled</span>
+      </div>
+      <div style="background:var(--bg2);border-top:1px solid var(--border);padding:6px 12px;font-size:10px;color:var(--muted);text-align:right">
+        SENTINEL RECON v25 · Discover. Diagnose. Deploy.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Drop. Double-click. Diagnose.</h2>
+  <p class="section-sub">No installers. No dependencies. No cloud accounts required. Just copy two files to a USB stick.</p>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Copy to USB</h3>
+      <p>Drag <code>SentinelRecon.Portable.ps1</code> and <code>.bat</code> onto any USB stick. That's it.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>Double-click</h3>
+      <p>On any Windows 10/11 box, double-click the <code>.bat</code>. It self-extracts to <code>%TEMP%</code> and launches the web console on port 8080.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Run Diagnostics</h3>
+      <p>Pick any tool from the catalog -- 89 scripts across 15 categories. Results come back as structured JSON with scored checks.</p>
+      <code>▶ Run: Full Security Audit<br/>Score: 85/100 -- 17/20 checks passed</code>
+    </div>
+  </div>
+
+  <div class="code-demo" style="margin-top:40px">
+    <div class="bar"><span></span><span></span><span></span></div>
+    <pre><span class="cmt"># Option A -- USB stick (zero install)</span>
+<span class="kw">Copy</span> SentinelRecon.Portable.ps1 + .bat <span class="kw">to</span> USB
+<span class="kw">Double-click</span> .bat <span class="kw">on any</span> Windows 10/11 box
+-> Self-extracts -> Web console <span class="kw">on</span> :8080
+
+<span class="cmt"># Option B -- Module import</span>
+<span class="kw">Import-Module</span> .\Core\MSPToolkit.psd1
+<span class="kw">Get-SecurityPostureScore</span>
+
+<span class="cmt"># Option C -- REST API (headless/SSH)</span>
+.\Tools\Start-MSPApi.ps1 <span class="kw">-ApiOnly</span>
+curl http://localhost:8080/api/health</pre>
+  </div>
+</section>
+
+<!-- Platforms -->
+<section id="platforms">
+  <div class="section-label">Deploy Anywhere</div>
+  <h2 class="section-title" style="text-align:center">Windows. macOS. Linux.</h2>
+  <p class="section-sub" style="text-align:center;margin:0 auto 40px">One toolkit. Three platforms. Full parity diagnostics on every OS your clients run.</p>
+  <div class="platforms">
+    <div class="platform-badge win"><span class="dot"></span> Windows 10/11 · Server 2016-2025</div>
+    <div class="platform-badge mac"><span class="dot"></span> macOS 12+ · Apple Silicon</div>
+    <div class="platform-badge linux"><span class="dot"></span> Linux · Ubuntu/Debian/RHEL</div>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:14px">PowerShell 5.1 (built into Windows) or PowerShell 7+ (macOS/Linux)</p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="deploy">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">Ready to deploy?</h2>
+  <p class="section-sub" style="margin:0 auto 32px">
+    <strong>SentinelRecon.Portable.ps1</strong> -- 161 files, 1.25 MB, single self-extracting bundle.<br>
+    Copy to USB. Drop on any box. Diagnose everything.
+  </p>
+    <a href="https://github.com/dirtysouthalpha/msptier3toolkit/releases" class="btn btn-primary">⬇ Download Sentinel Recon v25</a>
+  <p style="margin-top:16px;font-size:13px;color:var(--muted)">
+    Bundle hash: <code style="color:var(--cyan)">18D9764F4D939B6B</code> ·
+    <a href="https://github.com/dirtysouthalpha/msptier3toolkit" style="color:var(--cyan)">GitHub</a> ·
+    <a href="https://github.com/dirtysouthalpha/msptier3toolkit/actions" style="color:var(--lime)">CI Status</a>
+  </p>
+  <p style="margin-top:8px;font-size:12px;color:var(--muted)">Also available on <a href="https://www.powershellgallery.com/" style="color:var(--cyan)">PowerShell Gallery</a> -- coming soon</p>
+  </p>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="brand-row">
+    <span>Sentinel Override</span>
+    <span style="color:var(--muted)">·</span>
+    <span>Sentinel Desktop</span>
+    <span style="color:var(--muted)">·</span>
+    <span style="color:var(--cyan);font-weight:700">Sentinel Recon</span>
+  </div>
+  <p>Part of the <strong>Sentinel</strong> product family. Built for IT Pros & MSPs.</p>
+  <p style="margin-top:6px">© Sentinel Recon contributors · MIT License</p>
+</footer>
+
+</body>
+</html>

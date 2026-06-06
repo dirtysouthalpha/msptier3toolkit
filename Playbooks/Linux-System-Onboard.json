@@ -1,0 +1,17 @@
+{
+  "name": "Linux-System-Onboard",
+  "version": "1.0.0",
+  "description": "Linux system onboarding -- full system report, security posture, disk health, and network survey",
+  "category": "Linux",
+  "maxParallel": 3,
+  "timeoutMin": 20,
+  "steps": [
+    { "id": "system", "command": "& 'Get-LinuxSystemReport.ps1'", "description": "Full Linux system report", "dependsOn": [], "retryCount": 0 },
+    { "id": "disk", "command": "& 'Get-LinuxDiskHealth.ps1'", "description": "Disk health and SMART status", "dependsOn": [], "retryCount": 0 },
+    { "id": "network", "command": "& 'Get-LinuxNetworkSurvey.ps1'", "description": "Network configuration survey", "dependsOn": [], "retryCount": 0 },
+    { "id": "security", "command": "& 'Get-LinuxSecurityPosture.ps1'", "description": "Security posture assessment", "dependsOn": [], "retryCount": 0 },
+    { "id": "services", "command": "& 'Get-LinuxServiceAudit.ps1'", "description": "Service audit", "dependsOn": [], "retryCount": 0 },
+    { "id": "packages", "command": "& 'Get-LinuxPackageAudit.ps1'", "description": "Package audit and updates", "dependsOn": [], "retryCount": 0 },
+    { "id": "kernel", "command": "& 'Get-LinuxKernelHardening.ps1'", "description": "Kernel hardening check", "dependsOn": [], "retryCount": 0 }
+  ]
+}

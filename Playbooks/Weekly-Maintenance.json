@@ -1,0 +1,17 @@
+{
+  "name": "Weekly-Maintenance",
+  "version": "1.0.0",
+  "description": "Standard weekly maintenance run -- temp cleanup, update check, security scan, and performance baseline",
+  "category": "Maintenance",
+  "maxParallel": 3,
+  "timeoutMin": 45,
+  "steps": [
+    { "id": "cleanup", "command": "& 'ScheduledTempCleanup.ps1'", "description": "Scheduled temp file cleanup", "dependsOn": [], "retryCount": 1, "rollback": "Write-Output 'Cleanup cannot be rolled back'" },
+    { "id": "patches", "command": "& 'Get-PatchCompliance.ps1'", "description": "Windows update compliance", "dependsOn": [], "retryCount": 0 },
+    { "id": "security", "command": "& 'Get-SecurityPostureScore.ps1'", "description": "Security posture check", "dependsOn": [], "retryCount": 0 },
+    { "id": "performance", "command": "& 'Get-AppPerformanceBaseline.ps1'", "description": "Performance baseline capture", "dependsOn": ["cleanup"], "retryCount": 1 },
+    { "id": "bloat", "command": "& 'OEMBloatwareRemover.ps1' -WhatIf", "description": "Bloatware scan (WhatIf only)", "dependsOn": [], "retryCount": 0 },
+    { "id": "services", "command": "& 'Get-ServiceDependencyMap.ps1'", "description": "Service dependency audit", "dependsOn": [], "retryCount": 0 },
+    { "id": "dashboard", "command": "& 'New-MSPDashboard'", "description": "Generate weekly dashboard", "dependsOn": ["patches", "security", "performance"], "retryCount": 0 }
+  ]
+}

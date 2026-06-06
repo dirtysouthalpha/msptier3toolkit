@@ -1,0 +1,37 @@
+{
+  "templateName": "New Hire Provisioning",
+  "description": "Standard setup for new employee workstations",
+  "category": "User Management",
+  "scripts": [
+    {
+      "id": 5,
+      "name": "M365 User Provisioning",
+      "parameters": {
+        "UsageLocation": "US",
+        "License": "ENTERPRISEPACK",
+        "SendWelcomeEmail": true
+      }
+    },
+    {
+      "id": 7,
+      "name": "Comprehensive Cleanup",
+      "parameters": {
+        "IncludeTempFiles": true,
+        "ClearPrintQueue": true
+      }
+    },
+    {
+      "id": 12,
+      "name": "Windows Update Fix",
+      "parameters": {
+        "ForceUpdateCheck": true
+      }
+    }
+  ],
+  "settings": {
+    "runSequentially": true,
+    "continueOnError": false,
+    "generateReport": true
+  },
+  "notes": "Run this template for all new hire workstation setups. Ensure user account is created in AD first."
+}

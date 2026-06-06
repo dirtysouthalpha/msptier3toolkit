@@ -1,0 +1,18 @@
+{
+  "name": "AD-Health-Check",
+  "version": "1.0.0",
+  "description": "Comprehensive Active Directory health assessment across all domain controllers",
+  "category": "DC",
+  "maxParallel": 3,
+  "timeoutMin": 60,
+  "steps": [
+    { "id": "replication", "command": "& 'Get-ADReplicationHealth.ps1'", "description": "Check AD replication health", "dependsOn": [], "retryCount": 1, "verify": "if ($result.Score -lt 60) { throw 'Replication score too low' }" },
+    { "id": "dns", "command": "& 'Get-DNSZoneHealth.ps1'", "description": "Validate DNS zone health", "dependsOn": [], "retryCount": 1 },
+    { "id": "fsmo", "command": "& 'Get-FSMORoleAudit.ps1'", "description": "Audit FSMO role placement", "dependsOn": [], "retryCount": 0 },
+    { "id": "kerberos", "command": "& 'Get-KerberosHealth.ps1'", "description": "Check Kerberos health", "dependsOn": [], "retryCount": 1 },
+    { "id": "sysvol", "command": "& 'Get-SYSVOLHealth.ps1'", "description": "Verify SYSVOL replication", "dependsOn": ["replication"], "retryCount": 1 },
+    { "id": "dcdiag", "command": "& 'Invoke-DCDiagOrchestrator.ps1'", "description": "Run targeted DCDiag tests", "dependsOn": ["replication", "dns", "fsmo"], "retryCount": 0, "timeoutMin": 30 },
+    { "id": "trusts", "command": "& 'Test-TrustHealth.ps1'", "description": "Validate domain trusts", "dependsOn": [], "retryCount": 0 },
+    { "id": "summary", "command": "Write-Output 'AD Health Check complete'", "description": "Report summary", "dependsOn": ["sysvol", "dcdiag", "trusts", "kerberos"], "retryCount": 0 }
+  ]
+}

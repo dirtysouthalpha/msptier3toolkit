@@ -1,0 +1,15 @@
+{
+  "name": "Cloud-Tenant-Audit",
+  "version": "1.0.0",
+  "description": "Complete cloud tenant audit -- Entra Connect, Intune compliance, Conditional Access, and Exchange Online",
+  "category": "Cloud",
+  "maxParallel": 3,
+  "timeoutMin": 30,
+  "steps": [
+    { "id": "entra", "command": "& 'Get-EntraConnectHealth.ps1'", "description": "Azure AD Connect sync health", "dependsOn": [], "retryCount": 0 },
+    { "id": "intune", "command": "& 'Get-IntuneCompliance.ps1'", "description": "Intune device compliance", "dependsOn": [], "retryCount": 0 },
+    { "id": "ca", "command": "& 'Get-ConditionalAccessReport.ps1'", "description": "Conditional Access policy audit", "dependsOn": [], "retryCount": 0 },
+    { "id": "exo", "command": "& 'Get-ExchangeOnlineHealth.ps1'", "description": "Exchange Online health", "dependsOn": [], "retryCount": 0 },
+    { "id": "cost", "command": "& 'Invoke-MSPCostOptimizer'", "description": "Cost optimization analysis", "dependsOn": ["entra", "exo"], "retryCount": 0 }
+  ]
+}

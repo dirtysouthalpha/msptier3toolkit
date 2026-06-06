@@ -1,0 +1,54 @@
+===============================================================================
+   URGENT UPDATE REQUIRED - LAUNCHER FIX AVAILABLE
+===============================================================================
+
+PROBLEM:
+--------
+Your current version has emoji encoding errors that prevent the launcher
+from working. This was fixed in the latest version.
+
+ERROR YOU'RE SEEING:
+--------------------
+"At Launch-MSPToolkit.ps1:57 char:38" - Corrupted emoji characters
+
+SOLUTION - DELETE OLD VERSION AND RE-DOWNLOAD:
+----------------------------------------------
+
+1. DELETE these folders completely:
+   - C:\Users\Administrator\Downloads\msptier3toolkit-main
+   - C:\Users\Administrator\Downloads\msptier3toolkit-main (2)
+
+2. GO TO GITHUB:
+   https://github.com/dirtysouthalpha/msptier3toolkit
+
+3. CLICK the green "Code" button
+
+4. CLICK "Download ZIP"
+
+5. EXTRACT to a NEW location (NOT in Downloads with old versions)
+
+6. RUN "Launch MSP Toolkit.bat"
+
+WHY THIS HAPPENED:
+------------------
+- You downloaded the toolkit BEFORE the latest fixes were merged
+- Windows cached the old version
+- The "(2)" in your folder name shows Windows gave you a duplicate
+- The latest version on GitHub main branch has ALL fixes applied
+
+ALTERNATIVE - DIRECT FILE REPLACEMENT:
+--------------------------------------
+If you can't re-download, I can provide the corrected Launch-MSPToolkit.ps1
+file content directly. Just let me know.
+
+VERIFICATION:
+-------------
+The fixed version has ASCII characters like this at line 57:
+   "SUCCESS" { "[+]"; $color = "Green" }
+
+NOT emoji characters like this:
+   "SUCCESS" { "✓"; $color = "Green" }
+
+===============================================================================
+Your GitHub repository is CORRECT and FIXED. You just need a fresh download!
+===============================================================================

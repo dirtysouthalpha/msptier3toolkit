@@ -1,0 +1,15 @@
+{
+  "name": "Exchange-Server-Health",
+  "version": "1.0.0",
+  "description": "Complete Exchange Server health check -- queues, DAG, databases, certificates, and services",
+  "category": "Apps",
+  "maxParallel": 2,
+  "timeoutMin": 30,
+  "steps": [
+    { "id": "services", "command": "& 'Get-ServiceDependencyMap.ps1'", "description": "Service dependency analysis", "dependsOn": [], "retryCount": 0 },
+    { "id": "exchange", "command": "& 'Get-ExchangeServerHealth.ps1'", "description": "Exchange Server health", "dependsOn": [], "retryCount": 1, "timeoutMin": 15 },
+    { "id": "iis", "command": "& 'Get-IISAppPoolStatus.ps1'", "description": "IIS app pool health", "dependsOn": [], "retryCount": 0 },
+    { "id": "backup", "command": "& 'Get-BackupStatus.ps1'", "description": "Backup status check", "dependsOn": [], "retryCount": 0 },
+    { "id": "vss", "command": "& 'Get-VSSWriterHealth.ps1'", "description": "VSS writer health", "dependsOn": [], "retryCount": 1 }
+  ]
+}

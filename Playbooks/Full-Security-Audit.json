@@ -1,0 +1,18 @@
+{
+  "name": "Full-Security-Audit",
+  "version": "1.0.0",
+  "description": "Complete security posture assessment with CIS benchmarking, firewall audit, and BitLocker verification",
+  "category": "Security",
+  "maxParallel": 4,
+  "timeoutMin": 45,
+  "steps": [
+    { "id": "cis", "command": "& 'Get-FullCISBenchmark.ps1'", "description": "Full CIS Level 1 benchmark", "dependsOn": [], "retryCount": 0, "timeoutMin": 15 },
+    { "id": "firewall", "command": "& 'Get-FirewallRiskAudit.ps1'", "description": "Firewall risk audit", "dependsOn": [], "retryCount": 0 },
+    { "id": "bitlocker", "command": "& 'Get-SecureBootTPMState.ps1'", "description": "Secure Boot and TPM status", "dependsOn": [], "retryCount": 0 },
+    { "id": "laps", "command": "& 'Test-LAPSDeployment.ps1'", "description": "LAPS deployment check", "dependsOn": [], "retryCount": 0 },
+    { "id": "certs", "command": "& 'Get-CertificateInventory.ps1'", "description": "Certificate inventory and expiry", "dependsOn": [], "retryCount": 0 },
+    { "id": "credguard", "command": "& 'Get-CredentialGuardState.ps1'", "description": "Credential Guard and VBS status", "dependsOn": [], "retryCount": 0 },
+    { "id": "exploit", "command": "& 'Get-ExploitGuardConfig.ps1'", "description": "Exploit Guard configuration", "dependsOn": [], "retryCount": 0 },
+    { "id": "posture", "command": "& 'Get-SecurityPostureScore.ps1'", "description": "Overall security posture score", "dependsOn": ["cis", "firewall", "bitlocker", "laps", "credguard", "exploit"], "retryCount": 0 }
+  ]
+}

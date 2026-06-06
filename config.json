@@ -1,0 +1,117 @@
+{
+  "version": "2.0.0",
+  "company": {
+    "name": "Your MSP Company",
+    "domain": "yourdomain.local",
+    "timezone": "Eastern Standard Time"
+  },
+  "paths": {
+    "logs": ".\\Logs",
+    "reports": ".\\Reports",
+    "cache": ".\\Cache",
+    "templates": ".\\Templates",
+    "knowledgeBase": ".\\KnowledgeBase",
+    "backups": ".\\Backups"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "Info",
+    "maxLogSizeMB": 50,
+    "retentionDays": 90,
+    "logToFile": true,
+    "logToConsole": true,
+    "enableColors": true
+  },
+  "activeDirectory": {
+    "defaultDomain": "yourdomain.local",
+    "defaultOU": "OU=Users,DC=yourdomain,DC=local",
+    "domainController": ""
+  },
+  "microsoft365": {
+    "defaultUsageLocation": "US",
+    "defaultLicense": "ENTERPRISEPACK",
+    "tenantId": "",
+    "connectOnStartup": false
+  },
+  "cleanup": {
+    "profileAgeDays": 30,
+    "tempFilesAgeDays": 7,
+    "diskCleanupThresholdGB": 10,
+    "autoCleanupEnabled": false
+  },
+  "monitoring": {
+    "printSpoolerCheckIntervalMinutes": 5,
+    "diskSpaceThresholdPercent": 15,
+    "memoryThresholdPercent": 90,
+    "autoHealEnabled": true,
+    "enableAlerts": true
+  },
+  "notifications": {
+    "emailEnabled": false,
+    "smtpServer": "",
+    "smtpPort": 587,
+    "fromAddress": "",
+    "toAddresses": [],
+    "teamsWebhookUrl": "",
+    "slackWebhookUrl": "",
+    "discordWebhookUrl": ""
+  },
+  "remoteExecution": {
+    "defaultCredentialName": "",
+    "timeout": 300,
+    "maxConcurrentJobs": 10,
+    "useCredSSP": false
+  },
+  "updates": {
+    "autoCheckForUpdates": true,
+    "updateBranch": "main",
+    "gitRepoUrl": "https://github.com/dirtysouthalpha/msptier3toolkit.git",
+    "backupBeforeUpdate": true
+  },
+  "webInterface": {
+    "enabled": true,
+    "port": 8080,
+    "useSSL": false,
+    "allowRemoteConnections": false,
+    "apiKey": ""
+  },
+  "rmmIntegration": {
+    "enabled": false,
+    "platform": "Generic",
+    "apiEndpoint": "",
+    "apiKey": "",
+    "autoCreateTickets": false,
+    "updateTicketStatus": false,
+    "extra": {}
+  },
+  "graph": {
+    "defaultTenantId": "",
+    "appOnlyEnabled": false
+  },
+  "fleet": {
+    "maxConcurrent": 32,
+    "perHostTimeoutSec": 300,
+    "retries": 1
+  },
+  "ui": {
+    "theme": "dark",
+    "showBanner": true,
+    "enableAnimations": true,
+    "compactMode": false,
+    "language": "en-US"
+  },
+  "security": {
+    "requireAdminForScripts": false,
+    "auditScriptExecution": false,
+    "encryptSensitiveData": true,
+    "allowRemoteExecution": false,
+    "requireApiKeyForLocalhost": true
+  },
+  "advanced": {
+    "debugMode": false,
+    "enableTelemetry": false,
+    "cacheResults": true,
+    "parallelProcessing": true,
+    "maxThreads": 5
+  }
+}

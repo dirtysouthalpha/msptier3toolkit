@@ -1,0 +1,41 @@
+{
+    "schema": "msp-playbook/v1",
+    "name": "Fix-Printing",
+    "version": "1.0",
+    "description": "User can't print -- try the eight most common fixes in order, stop on success.",
+    "stopOnSuccess": true,
+    "requireAdmin": true,
+    "verify": {
+        "script": "(Get-Service Spooler).Status -eq 'Running' -and (Get-Printer | Where-Object PrinterStatus -eq 'Normal').Count -gt 0"
+    },
+    "steps": [
+        {
+            "name": "restart-spooler",
+            "script": "Restart-Service Spooler -Force",
+            "verify": { "script": "(Get-Service Spooler).Status -eq 'Running'" },
+            "retry": 2,
+            "timeoutSec": 30
+        },
+        {
+            "name": "clear-spool-files",
+            "script": "Stop-Service Spooler -Force; Get-ChildItem 'C:\\Windows\\System32\\spool\\PRINTERS' -Force -ErrorAction SilentlyContinue | Remove-Item -Force; Start-Service Spooler",
+            "verify": { "script": "(Get-ChildItem 'C:\\Windows\\System32\\spool\\PRINTERS' -Force -ErrorAction SilentlyContinue).Count -eq 0" },
+            "timeoutSec": 60
+        },
+        {
+            "name": "reset-rpc-dependencies",
+            "script": "Restart-Service RpcSs -Force -WarningAction SilentlyContinue; Restart-Service Spooler -Force",
+            "timeoutSec": 30
+        },
+        {
+            "name": "remove-stuck-print-driver-host",
+            "script": "Get-Process printisolationhost,printfilterpipelinesvc -ErrorAction SilentlyContinue | Stop-Process -Force",
+            "timeoutSec": 15
+        },
+        {
+            "name": "reinstall-default-printer-port",
+            "script": "$dp = (Get-CimInstance Win32_Printer | Where-Object Default).Name; if ($dp) { $port = (Get-Printer $dp).PortName; Remove-PrinterPort -Name $port -ErrorAction SilentlyContinue; Add-PrinterPort -Name $port -ErrorAction SilentlyContinue }",
+            "timeoutSec": 30
+        }
+    ]
+}

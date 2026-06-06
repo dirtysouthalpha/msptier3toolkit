@@ -1,0 +1,14 @@
+{
+  "name": "RMM-Platform-Health",
+  "version": "1.0.0",
+  "description": "RMM platform health check across all integrated platforms -- NinjaOne, ConnectWise, Datto, Autotask",
+  "category": "RMM",
+  "maxParallel": 4,
+  "timeoutMin": 15,
+  "steps": [
+    { "id": "ninja", "command": "& 'Get-NinjaOneHealth.ps1'", "description": "NinjaOne agent health", "dependsOn": [], "retryCount": 0 },
+    { "id": "cw", "command": "& 'Get-ConnectWiseIntegration.ps1'", "description": "ConnectWise Manage integration", "dependsOn": [], "retryCount": 0 },
+    { "id": "datto", "command": "& 'Test-DattoBackupStatus.ps1'", "description": "Datto backup agent status", "dependsOn": [], "retryCount": 0 },
+    { "id": "autotask", "command": "& 'Get-AutotaskTicketSync.ps1'", "description": "Autotask API connectivity", "dependsOn": [], "retryCount": 0 }
+  ]
+}

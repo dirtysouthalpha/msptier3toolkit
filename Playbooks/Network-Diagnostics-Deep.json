@@ -1,0 +1,17 @@
+{
+  "name": "Network-Diagnostics-Deep",
+  "version": "1.0.0",
+  "description": "Deep network diagnostics -- DNS, WiFi, VPN, throughput, topology, and packet analysis",
+  "category": "Network",
+  "maxParallel": 3,
+  "timeoutMin": 45,
+  "steps": [
+    { "id": "dns", "command": "& 'Test-DNSDeepDive.ps1'", "description": "DNS deep dive", "dependsOn": [], "retryCount": 0 },
+    { "id": "m365", "command": "& 'Test-M365Endpoints.ps1'", "description": "M365 endpoint connectivity", "dependsOn": [], "retryCount": 0 },
+    { "id": "wifi", "command": "& 'Get-WiFiSurvey.ps1'", "description": "WiFi survey", "dependsOn": [], "retryCount": 0 },
+    { "id": "vpn", "command": "& 'Test-VPNHealth.ps1'", "description": "VPN health check", "dependsOn": [], "retryCount": 0 },
+    { "id": "topology", "command": "& 'Get-NetworkTopology.ps1'", "description": "Network topology map", "dependsOn": [], "retryCount": 1 },
+    { "id": "arp", "command": "& 'Get-ARPCacheAudit.ps1'", "description": "ARP cache audit", "dependsOn": [], "retryCount": 0 },
+    { "id": "throughput", "command": "& 'Test-LANThroughput.ps1'", "description": "LAN throughput test", "dependsOn": ["topology"], "retryCount": 1, "timeoutMin": 15 }
+  ]
+}

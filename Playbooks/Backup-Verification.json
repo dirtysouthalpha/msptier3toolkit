@@ -1,0 +1,16 @@
+{
+  "name": "Backup-Verification",
+  "version": "1.0.0",
+  "description": "Complete backup infrastructure verification -- VSS, backup jobs, shadow copies, restore readiness",
+  "category": "Backup",
+  "maxParallel": 2,
+  "timeoutMin": 30,
+  "steps": [
+    { "id": "vss", "command": "& 'Get-VSSWriterHealth.ps1'", "description": "VSS writer health with auto-retry", "dependsOn": [], "retryCount": 1 },
+    { "id": "backup_status", "command": "& 'Get-BackupStatus.ps1'", "description": "Backup job history", "dependsOn": [], "retryCount": 0 },
+    { "id": "shadow", "command": "& 'Get-ShadowCopyReport.ps1'", "description": "Shadow copy inventory", "dependsOn": [], "retryCount": 0 },
+    { "id": "system_state", "command": "& 'Test-SystemStateIntegrity.ps1'", "description": "System state integrity check", "dependsOn": [], "retryCount": 0 },
+    { "id": "restore", "command": "& 'Test-RestoreReadiness.ps1'", "description": "Restore readiness test", "dependsOn": ["vss", "backup_status"], "retryCount": 0 },
+    { "id": "recovery", "command": "& 'Get-RecoveryPartitionStatus.ps1'", "description": "Recovery partition health", "dependsOn": [], "retryCount": 0 }
+  ]
+}

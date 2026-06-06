@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="scanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0078FF;stop-opacity:1"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#00F0FF;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background circle glow -->
+  <circle cx="256" cy="256" r="240" fill="url(#glowGrad)"/>
+
+  <!-- Outer reticle ring -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#scanGrad)" stroke-width="3" opacity="0.6"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="url(#scanGrad)" stroke-width="2" opacity="0.4"/>
+  <circle cx="256" cy="256" r="100" fill="none" stroke="url(#scanGrad)" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Crosshair lines -->
+  <!-- Horizontal -->
+  <line x1="76" y1="256" x2="436" y2="256" stroke="url(#scanGrad)" stroke-width="2" opacity="0.8"/>
+  <!-- Vertical -->
+  <line x1="256" y1="76" x2="256" y2="436" stroke="url(#scanGrad)" stroke-width="2" opacity="0.8"/>
+
+  <!-- Crosshair ticks -->
+  <line x1="96" y1="256" x2="116" y2="256" stroke="url(#scanGrad)" stroke-width="4"/>
+  <line x1="396" y1="256" x2="416" y2="256" stroke="url(#scanGrad)" stroke-width="4"/>
+  <line x1="256" y1="96" x2="256" y2="116" stroke="url(#scanGrad)" stroke-width="4"/>
+  <line x1="256" y1="396" x2="256" y2="416" stroke="url(#scanGrad)" stroke-width="4"/>
+
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="8" fill="#00F0FF"/>
+  <circle cx="256" cy="256" r="4" fill="#050608"/>
+
+  <!-- Scanning line arc (representing reconnaissance/detection) -->
+  <path d="M 120 180 A 140 140 0 0 1 380 180" fill="none" stroke="url(#scanGrad)" stroke-width="3" opacity="0.9" stroke-linecap="round"/>
+  
+  <!-- Small scanning dot on the arc -->
+  <circle cx="180" cy="148" r="5" fill="#00F0FF" opacity="0.9">
+    <animate attributeName="cx" from="120" to="380" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="cy" from="180" to="180" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Diagonal accent lines (45deg corners) -->
+  <line x1="108" y1="148" x2="128" y2="128" stroke="url(#scanGrad)" stroke-width="2" opacity="0.5"/>
+  <line x1="404" y1="148" x2="384" y2="128" stroke="url(#scanGrad)" stroke-width="2" opacity="0.5"/>
+  <line x1="108" y1="364" x2="128" y2="384" stroke="url(#scanGrad)" stroke-width="2" opacity="0.5"/>
+  <line x1="404" y1="364" x2="384" y2="384" stroke="url(#scanGrad)" stroke-width="2" opacity="0.5"/>
+</svg>

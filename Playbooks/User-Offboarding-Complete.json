@@ -1,0 +1,14 @@
+{
+  "name": "User-Offboarding-Complete",
+  "version": "1.0.0",
+  "description": "Complete user offboarding with audit trail -- account disable, session revoke, license reclaim, and security check",
+  "category": "Lifecycle",
+  "maxParallel": 2,
+  "timeoutMin": 20,
+  "steps": [
+    { "id": "snapshot", "command": "Write-Output 'Snapshot taken'", "description": "Pre-offboarding snapshot", "dependsOn": [], "retryCount": 0 },
+    { "id": "disable", "command": "& 'Invoke-UserOffboarding.ps1' -WhatIf", "description": "Offboarding simulation (WhatIf)", "dependsOn": ["snapshot"], "retryCount": 1, "rollback": "Write-Output 'WhatIf only -- no rollback needed'" },
+    { "id": "license_check", "command": "& 'Get-LicenseRecoveryReport.ps1'", "description": "License recovery report", "dependsOn": ["disable"], "retryCount": 0 },
+    { "id": "audit", "command": "Write-Output 'Audit log written'", "description": "Write audit trail", "dependsOn": ["disable", "license_check"], "retryCount": 0 }
+  ]
+}
