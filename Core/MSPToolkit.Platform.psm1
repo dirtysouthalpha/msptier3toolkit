@@ -675,9 +675,9 @@ function Get-MSPPlatformUsers {
                     Name        = $_.Name
                     FullName    = $_.FullName
                     Enabled     = $_.Enabled
-                    LastLogon   = if ($_.PSObject.Properties.Name -contains 'LastLogon') { $_.LastLogon.ToString('o') } else { $null }
+                    LastLogon   = if ($_.LastLogon) { $_.LastLogon.ToString('o') } else { $null }
                     Description = $_.Description
-                    SID         = if ($_.PSObject.Properties.Name -contains 'SID') { $_.SID.Value } else { '' }
+                    SID         = if ($_.SID) { $_.SID.Value } else { '' }
                 }
             }
         } catch { }

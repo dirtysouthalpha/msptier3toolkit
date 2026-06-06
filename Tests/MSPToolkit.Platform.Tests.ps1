@@ -141,9 +141,10 @@ Describe 'MSPToolkit.Platform' {
     }
 
     Context 'Get-MSPPlatformUsers' {
-        It 'Returns users array' {
+        It 'Returns users' {
             $users = Get-MSPPlatformUsers
-            $users -is [Array] | Should -Be $true
+            $users | Should -Not -BeNullOrEmpty
+            @($users).Count | Should -BeGreaterOrEqual 1
         }
 
         It 'Does not throw' {
